@@ -2,3 +2,4 @@
 vars.tf.bak
 vars.tf
 .terraform*
+terraform*
