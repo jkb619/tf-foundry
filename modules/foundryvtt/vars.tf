@@ -16,13 +16,13 @@ locals {
 
 data "aws_region" "current" {}
 
-variable artifacts_bucket_public {
-  default     = true
-  description = "Whether or not the artifacts bucket should be public. To reuse this bucket for direct Amazon S3 asset storage in browser, set to true."
-}
+#variable artifacts_bucket_public {
+#  default     = true
+#  description = "Whether or not the artifacts bucket should be public. To reuse this bucket for direct Amazon S3 asset storage in browser, set to true."
+#}
 
 variable artifacts_data_expiration_days {
-  default     = 30
+  default     = 7
   description = "The amount of days after which non-current version of the artifacts bucket Foundry data is expired."
 }
 
