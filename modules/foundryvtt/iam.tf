@@ -57,50 +57,50 @@ data "aws_iam_policy_document" "foundry_server" {
     ])
   }
 
-  statement {
-    sid = "S3ListAllBucketsAccess"
-    actions = [
-      "s3:ListAllMyBuckets",
+#  statement {
+#    sid = "S3ListAllBucketsAccess"
+#    actions = [
+#      "s3:ListAllMyBuckets",
       # "ecr:GetAuthorizationToken",
       # "ecr:BatchCheckLayerAvailability",
       # "ecr:GetDownloadUrlForLayer",
       # "ecr:BatchGetImage",
-    ]
-    resources = [
-      "*"
-    ]
-  }
+#    ]
+#    resources = [
+#      "*"
+#    ]
+#  }
 
-  statement {
-    sid = "S3BucketAccess"
-    actions = [
-      "s3:GetBucket*",
-      "s3:List*",
-    ]
-    resources = [
-      aws_s3_bucket.foundry_artifacts.arn,
-    ]
-  }
+#  statement {
+#    sid = "S3BucketAccess"
+#    actions = [
+#      "s3:GetBucket*",
+#      "s3:List*",
+#    ]
+#    resources = [
+#      aws_s3_bucket.foundry_artifacts.arn,
+#    ]
+#  }
 
-  statement {
-    sid = "S3BucketObjectGetAccess"
-    actions = [
-      "s3:GetObject*"
-    ]
-    resources = [
-      "${aws_s3_bucket.foundry_artifacts.arn}/*"
-    ]
-  }
+#  statement {
+#    sid = "S3BucketObjectGetAccess"
+#    actions = [
+#      "s3:GetObject*"
+#    ]
+#    resources = [
+#      "${aws_s3_bucket.foundry_artifacts.arn}/*"
+#    ]
+#  }
 
-  statement {
-    sid = "S3BucketObjectPutAccess"
-    actions = [
-      "s3:PutObject*"
-    ]
-    resources = [
-      "${aws_s3_bucket.foundry_artifacts.arn}/data/${terraform.workspace}/*"
-    ]
-  }
+#  statement {
+#    sid = "S3BucketObjectPutAccess"
+#    actions = [
+#      "s3:PutObject*"
+#    ]
+#    resources = [
+#      "${aws_s3_bucket.foundry_artifacts.arn}/data/${terraform.workspace}/*"
+#    ]
+#  }
 
   statement {
     sid = "EFSFoundryDataWriteAccess"
@@ -143,12 +143,12 @@ resource "aws_iam_role_policy_attachment" "foundry_server" {
 }
 
 output "role_arn" {
-  description = "The ARN of the role the Foundry server uses to access credentials and the artifacts bucket."
+  description = "The ARN of the role the Foundry server uses to access credentials."
   value       = aws_iam_role.foundry_server.arn
 }
 
 output "role_name" {
-  description = "The name of the role the Foundry server uses to access credentials and the artifacts bucket."
+  description = "The name of the role the Foundry server uses to access credentials."
   value       = aws_iam_role.foundry_server.name
 }
 

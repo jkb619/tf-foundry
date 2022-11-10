@@ -7,58 +7,47 @@ locals {
   ecs_container_definition_foundry_server = [{
     image = var.foundryvtt_docker_image
     name  = "foundry-server-${terraform.workspace}"
-#    environment = [
-#     {
-#       name  = "FOUNDRY_AWS_CONFIG"
-#       value = true
-#     }
-#   ]
 
-   linuxParameters = {
-     initProcessEnabled = true  
-   } 
+    linuxParameters = {
+      initProcessEnabled = true  
+    } 
 
-   logConfiguration = {
-     logDriver = "awslogs",
-     options = {
-       awslogs-create-group  = "true"
-       awslogs-group         = "foundry-server-${terraform.workspace}"
-       awslogs-region        = local.region
-       awslogs-stream-prefix = "ecs-container"
-     }
-   }
-   mountPoints = [
-#   {
-#     containerPath = "/data/Config"
-#     sourceVolume  = "foundry-config"
-#     readOnly = false
-#   },
-   {
-     containerPath = "/data/Data"
-     sourceVolume  = "foundry-data"
-     readOnly = false
+    logConfiguration = {
+      logDriver = "awslogs",
+      options = {
+        awslogs-create-group  = "true"
+        awslogs-group         = "foundry-server-${terraform.workspace}"
+        awslogs-region        = local.region
+        awslogs-stream-prefix = "ecs-container"
+      }
+    }
+    mountPoints = [
+    {
+      containerPath = "/data/Data"
+      sourceVolume  = "foundry-data"
+      readOnly = false
+    }]
+
+    portMappings = [{
+      hostPort      = local.foundry_port
+      protocol      = "tcp"
+      containerPort = local.foundry_port
+    }]
+    secrets = [
+      {
+        name      = "FOUNDRY_USERNAME"
+        valueFrom = aws_ssm_parameter.foundry_username.arn
+      },
+      {
+        name      = "FOUNDRY_PASSWORD"
+        valueFrom = aws_ssm_parameter.foundry_password.arn
+      },
+      local.ecs_secrets_foundry_admin_key
+   ]
    }]
 
-   portMappings = [{
-     hostPort      = local.foundry_port
-     protocol      = "tcp"
-     containerPort = local.foundry_port
-   }]
-   secrets = [
-     {
-       name      = "FOUNDRY_USERNAME"
-       valueFrom = aws_ssm_parameter.foundry_username.arn
-     },
-     {
-       name      = "FOUNDRY_PASSWORD"
-       valueFrom = aws_ssm_parameter.foundry_password.arn
-     },
-     local.ecs_secrets_foundry_admin_key
-  ]
-  }]
-
-  ecs_container_availability_zones_stringified = format("[%s]", join(", ", local.server_availability_zones))
-  ecs_container_foundry_user_and_group_id      = 421
+   ecs_container_availability_zones_stringified = format("[%s]", join(", ", local.server_availability_zones))
+   ecs_container_foundry_user_and_group_id      = 421
 }
 
 resource "aws_security_group" "foundry_server" {
@@ -156,17 +145,6 @@ resource "aws_ecs_task_definition" "foundry_server" {
       }
     }
   }
-#  volume {
-#    name = "foundry-config"
-#    efs_volume_configuration {
-#      file_system_id     = aws_efs_file_system.foundry_server_data.id
-#      transit_encryption = "ENABLED"
-#      authorization_config {
-#        access_point_id = aws_efs_access_point.foundry_server_data.id
-#        iam             = "ENABLED"
-#      }
-#    }
-#  }
 }
 #########################################
 resource "aws_efs_file_system" "foundry_server_data" {
