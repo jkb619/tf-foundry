@@ -8,6 +8,7 @@ module "foundry_server" {
   domain_name             = var.domain_name
   ssl_certificate_arn     = var.ssl_certificate_arn
   foundry_admin_key       = var.foundry_admin_key
+  route53_zone_id         = var.route53_zone_id
 }
 
 provider "aws" {

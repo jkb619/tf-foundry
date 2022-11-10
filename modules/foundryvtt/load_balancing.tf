@@ -7,14 +7,14 @@ resource "aws_security_group" "foundry_load_balancer" {
   depends_on = [aws_internet_gateway.foundry]
 }
 
-resource "aws_security_group_rule" "lb_allow_inbound_80" {
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 80
-  protocol          = "tcp"
-  security_group_id = aws_security_group.foundry_load_balancer.id
-  to_port           = 80
-  type              = "ingress"
-}
+#resource "aws_security_group_rule" "lb_allow_inbound_80" {
+#  cidr_blocks       = ["0.0.0.0/0"]
+#  from_port         = 80
+#  protocol          = "tcp"
+#  security_group_id = aws_security_group.foundry_load_balancer.id
+#  to_port           = 80
+#  type              = "ingress"
+#}
 
 resource "aws_security_group_rule" "lb_allow_inbound_443" {
   cidr_blocks       = ["0.0.0.0/0"]
@@ -43,20 +43,20 @@ resource "aws_lb" "foundry_server" {
   tags               = local.tags_rendered
 }
 
-resource "aws_lb_target_group" "lb_foundry_server_http" {
-  name        = "${aws_lb.foundry_server.name}-http-tg"
-  port        = local.foundry_port
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = aws_vpc.foundry.id
+#resource "aws_lb_target_group" "lb_foundry_server_http" {
+#  name        = "${aws_lb.foundry_server.name}-http-tg"
+#  port        = local.foundry_port
+#  protocol    = "HTTP"
+#  target_type = "ip"
+#  vpc_id      = aws_vpc.foundry.id
 
-  health_check {
-    healthy_threshold = 2
-    matcher           = "200-299,302"
-    path              = "/"
-    protocol          = "HTTP"
-  }
-}
+#  health_check {
+#    healthy_threshold = 2
+#    matcher           = "200-299,302"
+#    path              = "/"
+#    protocol          = "HTTP"
+#  }
+#}
 
 resource "aws_lb_target_group" "lb_foundry_server_https" {
   name        = "${aws_lb.foundry_server.name}-https-tg"
@@ -73,16 +73,16 @@ resource "aws_lb_target_group" "lb_foundry_server_https" {
   }
 }
 
-resource "aws_lb_listener" "foundry_server_http" {
-  load_balancer_arn = aws_lb.foundry_server.arn
-  port              = aws_security_group_rule.lb_allow_inbound_80.to_port
-  protocol          = aws_lb_target_group.lb_foundry_server_http.protocol
+#resource "aws_lb_listener" "foundry_server_http" {
+#  load_balancer_arn = aws_lb.foundry_server.arn
+#  port              = aws_security_group_rule.lb_allow_inbound_80.to_port
+#  protocol          = aws_lb_target_group.lb_foundry_server_http.protocol
 
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.lb_foundry_server_http.arn
-  }
-}
+#  default_action {
+#    type             = "forward"
+#    target_group_arn = aws_lb_target_group.lb_foundry_server_http.arn
+#  }
+#}
 
 resource "aws_lb_listener" "foundry_server_https" {
   load_balancer_arn = aws_lb.foundry_server.arn
@@ -111,22 +111,22 @@ output lb_zone_id {
   value       = aws_lb.foundry_server.zone_id
 }
 
-output target_group_http_arn {
-  description = "The ARN of the HTTP target group receiving traffic from the HTTP ALB listener."
-  value       = aws_lb_target_group.lb_foundry_server_http.arn
-}
-
-output target_group_http_name {
-  description = "The name of the HTTP target group receiving traffic from the HTTP ALB listener."
-  value       = aws_lb_target_group.lb_foundry_server_http.name
-}
-
-#output target_group_https_arn {
-#  description = "The ARN of the HTTPS target group receiving traffic from the HTTPS ALB listener."
-#  value       = aws_lb_target_group.lb_foundry_server_https.arn
+#output target_group_http_arn {
+#  description = "The ARN of the HTTP target group receiving traffic from the HTTP ALB listener."
+#  value       = aws_lb_target_group.lb_foundry_server_http.arn
 #}
 
-#output target_group_https_name {
-#  description = "The name of the HTTPS target group receiving traffic from the HTTPS ALB listener."
-#  value       = aws_lb_target_group.lb_foundry_server_https.name
+#output target_group_http_name {
+#  description = "The name of the HTTP target group receiving traffic from the HTTP ALB listener."
+#  value       = aws_lb_target_group.lb_foundry_server_http.name
 #}
+
+output target_group_https_arn {
+  description = "The ARN of the HTTPS target group receiving traffic from the HTTPS ALB listener."
+  value       = aws_lb_target_group.lb_foundry_server_https.arn
+}
+
+output target_group_https_name {
+  description = "The name of the HTTPS target group receiving traffic from the HTTPS ALB listener."
+  value       = aws_lb_target_group.lb_foundry_server_https.name
+}

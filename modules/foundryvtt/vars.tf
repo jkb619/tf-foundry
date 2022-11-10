@@ -79,6 +79,11 @@ variable ssl_certificate_arn {
 }
 
 variable domain_name {
-  description = "domain name to prefix with 'cloud-foundry'"
+  description = "fqdn of the site"
+  type        = string
+}
+
+variable route53_zone_id {
+  description = "zoneid of the domain"
   type        = string
 }
