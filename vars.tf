@@ -21,3 +21,7 @@ variable ssl_certificate_arn {
 variable domain_name {
   description = "domain name to prefix with 'cloud-foundry'"
 }
+
+variable foundry_admin_key {
+  description = "password to log into foundry UI of the vtt"
+}

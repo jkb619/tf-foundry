@@ -37,7 +37,6 @@ variable aws_automation_role_arn {
 }
 
 variable foundry_admin_key {
-  default     = "Shirak#0"
   description = "The Admin Access Key to set for password-protecting administration access to the Foundry tool. Will be encrypted in AWS Parameter Store for exclusive use by the server."
   type        = string
 }
