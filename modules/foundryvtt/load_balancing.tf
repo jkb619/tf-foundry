@@ -87,10 +87,8 @@ resource "aws_lb_listener" "foundry_server_http" {
 resource "aws_lb_listener" "foundry_server_https" {
   load_balancer_arn = aws_lb.foundry_server.arn
   port              = aws_security_group_rule.lb_allow_inbound_443.from_port
-#  protocol          = aws_lb_target_group.lb_foundry_server_https.protocol
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-#  certificate_arn   = "arn:aws:acm:us-east-2:373055206579:certificate/6c8e2d05-9176-4a21-89c8-167c94151c7f"
   certificate_arn   = var.ssl_certificate_arn
   default_action {
     type             = "forward"
