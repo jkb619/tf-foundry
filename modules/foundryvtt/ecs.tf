@@ -156,9 +156,17 @@ resource "aws_efs_file_system" "foundry_server_data" {
     transition_to_ia = "AFTER_${var.artifacts_data_expiration_days}_DAYS"
   }
 #  lifecycle {
-#    prevent_destroy = true
+#   prevent_destroy = true
 #  }
 }
+
+#resource "aws_efs_backup_policy" "efs_backup_policy" {
+#  file_system_id = aws_efs_file_system.foundry_server_data.id
+#
+#  backup_policy {
+#    status = "ENABLED"
+#  }
+#}
 
 data "aws_iam_policy_document" "foundry_data_efs" {
   statement {
