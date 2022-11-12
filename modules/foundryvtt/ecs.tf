@@ -155,9 +155,9 @@ resource "aws_efs_file_system" "foundry_server_data" {
   lifecycle_policy {
     transition_to_ia = "AFTER_${var.artifacts_data_expiration_days}_DAYS"
   }
-#  lifecycle {
-#   prevent_destroy = true
-#  }
+  lifecycle {
+   prevent_destroy = true
+  }
 }
 
 #resource "aws_efs_backup_policy" "efs_backup_policy" {
