@@ -52,7 +52,7 @@ variable foundry_username {
 }
 
 variable foundryvtt_docker_image {
-  default     = "jobrown/foundryvtt:10.288.0"
+  default     = "jobrown/foundryvtt:10.290.0"
   description = "Probably won't work with other images yet but the option is there if you want to experiment"
 }
 
