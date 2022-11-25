@@ -67,16 +67,16 @@ resource "aws_internet_gateway" "foundry" {
   tags   = merge(local.tags_rendered, tomap({"Name" = "foundry-gateway-${terraform.workspace}"}))
 }
 
-resource "aws_nat_gateway" "foundry" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = element(aws_subnet.foundry_publics.*.id, 0)
-  tags          = merge(local.tags_rendered, tomap({"Name" = "foundry-nat-${terraform.workspace}"}))
-}
+#resource "aws_nat_gateway" "foundry" {
+#  allocation_id = aws_eip.nat.id
+#  subnet_id     = element(aws_subnet.foundry_publics.*.id, 0)
+#  tags          = merge(local.tags_rendered, tomap({"Name" = "foundry-nat-${terraform.workspace}"}))
+#}
 
-resource "aws_eip" "nat" {
-  tags = merge(local.tags_rendered, tomap({"Name" = "foundry-nat-${terraform.workspace}"}))
-  vpc  = true
-}
+#resource "aws_eip" "nat" {
+#  tags = merge(local.tags_rendered, tomap({"Name" = "foundry-nat-${terraform.workspace}"}))
+#  vpc  = true
+#}
 
 resource "aws_route" "foundry_internet_gw" {
   destination_cidr_block = "0.0.0.0/0"
@@ -84,11 +84,11 @@ resource "aws_route" "foundry_internet_gw" {
   route_table_id         = aws_route_table.foundry_public.id
 }
 
-resource "aws_route" "foundry_nat_gw" {
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.foundry.id
-  route_table_id         = aws_route_table.foundry_private.id
-}
+#resource "aws_route" "foundry_nat_gw" {
+#  destination_cidr_block = "0.0.0.0/0"
+#  nat_gateway_id         = aws_nat_gateway.foundry.id
+#  route_table_id         = aws_route_table.foundry_private.id
+#}
 
 output internet_gateway_arn {
   description = "The ARN of the Internet Gateway allowing internet access to public subnets in the Foundry VPC."

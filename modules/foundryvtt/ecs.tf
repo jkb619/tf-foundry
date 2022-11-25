@@ -32,6 +32,11 @@ locals {
       hostPort      = local.foundry_port
       protocol      = "tcp"
       containerPort = local.foundry_port
+    },
+    {
+      hostPort      = 22
+      protocol      = "tcp"
+      containerPort = 22
     }]
     secrets = [
       {
@@ -63,6 +68,15 @@ resource "aws_security_group_rule" "allow_foundry_port_ingress" {
   security_group_id        = aws_security_group.foundry_server.id
   source_security_group_id = aws_security_group.foundry_load_balancer.id
   to_port                  = local.foundry_port
+  type                     = "ingress"
+}
+
+resource "aws_security_group_rule" "allow_foundry_ssh_ingress" {
+  from_port                = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.foundry_server.id
+  cidr_blocks              = ["0.0.0.0/0"]
+  to_port                  = 22
   type                     = "ingress"
 }
 
@@ -116,10 +130,16 @@ resource "aws_ecs_service" "foundry_server" {
     container_port   = local.foundry_port
   }
 
+#  network_configuration {
+#    assign_public_ip = false
+#    security_groups  = [aws_security_group.foundry_server.id]
+#    subnets          = local.subnet_private_ids
+#  }
+
   network_configuration {
-    assign_public_ip = false
+    assign_public_ip = true
     security_groups  = [aws_security_group.foundry_server.id]
-    subnets          = local.subnet_private_ids
+    subnets          = local.subnet_public_ids
   }
 }
 
