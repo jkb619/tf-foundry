@@ -100,11 +100,11 @@ resource "aws_ecs_cluster" "foundry_server" {
 
 resource "aws_ecs_cluster_capacity_providers" "foundry_server" {
   cluster_name       = aws_ecs_cluster.foundry_server.name
-  capacity_providers = ["FARGATE"]
+  capacity_providers = ["FARGATE_SPOT"]
   default_capacity_provider_strategy {
     base              = 1
     weight            = 100
-    capacity_provider = "FARGATE"
+    capacity_provider = "FARGATE_SPOT"
   }
 }
 
