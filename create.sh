@@ -1,3 +1,3 @@
 #!/bin/bash
 
-terraform run-all apply
+terraform apply
