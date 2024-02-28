@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export TF_VAR_foundryvtt_docker_image=jobrown/foundryvtt:11.315.1
+
 #terraform state rm 'module.foundry_server.aws_efs_file_system.foundry_server_data'
 
 terraform destroy --auto-approve -target=module.foundry_server.data.aws_iam_policy_document.foundry_data_efs
@@ -53,5 +55,5 @@ terraform destroy --auto-approve -target=module.foundry_server.aws_ssm_parameter
 terraform destroy --auto-approve -target=module.foundry_server.aws_subnet.foundry_privates[0]
 terraform destroy --auto-approve -target=module.foundry_server.aws_subnet.foundry_privates[1]
 terraform destroy --auto-approve -target=module.foundry_server.aws_subnet.foundry_publics[0]
-terraform destroy --auto-approve -target=module.foundry_server.aws_subnet.foundry_publics[1]
+terraform destroy --auto-approve -target=module.foundry_server.aws_subnet.foundry_publics[1] -lock-false
 terraform destroy --auto-approve -target=module.foundry_server.aws_vpc.foundry

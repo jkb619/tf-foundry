@@ -9,6 +9,7 @@ module "foundry_server" {
   ssl_certificate_arn     = var.ssl_certificate_arn
   foundry_admin_key       = var.foundry_admin_key
   route53_zone_id         = var.route53_zone_id
+  foundryvtt_docker_image = var.foundryvtt_docker_image
 }
 
 provider "aws" {

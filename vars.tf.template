@@ -51,3 +51,8 @@ variable foundry_admin_key {
   default = "myadminpass"
   description = "password to log into foundry UI of the vtt"
 }
+
+variable foundryvtt_docker_image {
+  type = string
+  description = "The docker image to be used"
+}
